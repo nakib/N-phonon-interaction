@@ -8,7 +8,7 @@ First, some notation. I denote a phonon mode by *p*. A phonon mode is fully desc
 \[
 \delta^{x} \equiv \delta \left[ -\omega_{\mathbf{1}} + \sum_{j = 2}^{N} S(x, j - 1) \omega_{\mathbf{p}} \right],
 \]
-where $x \in [1, N - 1]$ is the interaction diagram label, $\omega_{\mathbf{p}}$ is the energy of the phonon mode *p*, and $S$ is sign metric defined as $S(x, i) = +$ for $x \leq i$ and $-$ otherwise.
+where $x \in [1, N - 1]$ is the interaction diagram label, $\omega_{\mathbf{p}}$ is the energy of the phonon mode *p*, and $S$ is a sign metric defined as $S(x, i) = +$ for $x \leq i$ and $-$ otherwise.
 
 Below I show the interaction diagrams for /2/-phonon (top) and /4/-phonon (bottom) scattering. The lines represent phonons. In general, all lines move from the left to the right. Lines ending at a vertex represents destruction of phonons, whereas lines emitting from the vertex represents creation of phonons. Each diagram has a weight factor, given in green, due to the double counting of indistinguishable phonon states that will happen at a later stage when all but phonon *1* will be integrated over.
 
