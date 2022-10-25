@@ -1,3 +1,6 @@
+;Prevent possible exploitation by the #. read macro.
+(setq *read-eval* nil)
+
 (defun string-to-float (line)
   "Convert string to float."
   
