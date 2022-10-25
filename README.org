@@ -15,6 +15,6 @@ Below I show the interaction diagrams for /2/-phonon (top) and /4/-phonon (botto
 [[./phonon-scattering-diagrams.png]]
 
 ** The solution
-We will need to evaluate integrals of the above diagrams over final phonons states. For the $N = 2$ case, the result has a special name -- density of states. For the rest, the solution requires adding or subtracting internal phonon wavevectors and folding them into the first Brillouin zone. We also need to sum over the internal phonon polarizations. Lastly, the expression for the delta function must be constructed and evaulated. For an arbitrary /N/, it will be hard, if not impossible, to do this easily using imperative programming languages (C/C++, Fortran, python, etc.). The problem seems to be well suited for Common Lisp since the language homoiconic. This is what I am attempting here.
+We will need to evaluate integrals of the above diagrams over final phonons states. For the $N = 2$ case, the result has a special name -- density of states. For the rest, the solution requires adding or subtracting internal phonon wavevectors and folding them into the first Brillouin zone. We also need to sum over the internal phonon polarizations. Lastly, the expression for the delta function must be constructed and evaulated. For an arbitrary /N/, it will be hard, if not impossible, to do this easily using imperative programming languages (C/C++, Fortran, python, etc.). The problem seems to be well suited for Common Lisp since the language is homoiconic. This is what I am attempting here.
 
 [To be continued...]
