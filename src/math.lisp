@@ -19,3 +19,9 @@ Brillouin zone."
   
   (mapcar #'mod 
 	  (mapcar #'+ q1 q2) '(1 1 1)))
+
+(defun delta (e1 e2 sigma)
+  "Returns the sigma-spread Gaussian representation of the delta function."
+  
+  (/ (exp (* -0.5 (expt (/ (- e1 e2) sigma) 2)))
+     (* sigma (sqrt (* 2 pi)))))
