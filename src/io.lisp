@@ -16,3 +16,14 @@
     (loop for line = (read-line stream nil)
           while line
 	  collect (string-to-float line))))
+
+(defun write-file (file data)
+  "Write data to file."
+
+  (with-open-file (stream file
+			  :if-does-not-exist :create
+			  :if-exists :supersede
+			  :direction :output)
+    (loop for rowdata in data
+	  do (format stream "    ~{~f~^ ~}" rowdata)
+	     (format stream "~%"))))

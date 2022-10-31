@@ -1,20 +1,20 @@
 (load "io.lisp")
 (load "interaction_diagrams.lisp")
 
-(defvar *q-mesh* '(6 6 6))
+(defparameter *q-mesh* '(6 6 6))
 
 ;;NOTE: The behaviors of first and last on *irreducible-wavevector-list* are different.
 ;; For the latter an extra pair of brackets appear. No issue with using nth.
-(defvar *ibz-wavevector-list*
+(defparameter *ibz-wavevector-list*
   (read-file "../wGaN_6x6x6data/ph.wavevecs_ibz"))
 
-(defvar *fbz-wavevector-list*
+(defparameter *fbz-wavevector-list*
   (read-file "../wGaN_6x6x6data/ph.wavevecs_fbz"))
 
-(defvar *ibz-energy-list*
+(defparameter *ibz-energy-list*
   (read-file "../wGaN_6x6x6data/ph.ens_ibz"))
 
-(defvar *fbz-energy-list*
+(defparameter *fbz-energy-list*
   (read-file "../wGaN_6x6x6data/ph.ens_fbz"))
 
 (defun state-energy (state energy-list)
@@ -45,3 +45,6 @@
 		 (lambda (energy)
 		   (density-of-states-at-energy energy fbz-energy-qlist sigma))
 		 energies-q)))
+
+;; Calculate and write density of states out to file.
+;(write-file "../dos" (density-of-states *ibz-energy-list* *fbz-energy-list* 0.001))
