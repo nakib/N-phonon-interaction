@@ -20,6 +20,37 @@ Brillouin zone."
   (mapcar #'mod 
 	  (mapcar #'+ q1 q2) '(1 1 1)))
 
+(defun demux (i grid)
+  "Demultiplexes a 0-based index i into integer 0-based triplet (x y z).
+The x index cycles first, followed by y and then z."
+  
+  (multiple-value-bind (quotient x) (floor i (first grid))
+    (multiple-value-bind (z y) (floor quotient (second grid))
+      (list x y z))))
+
+(defun mux (q grid)
+  "Inverse operation of the demux function."
+  
+  (+ (first q)
+     (* (first grid) (+ (second q) (* (second grid) (third q))))))
+
+(defun combine (operator q1 q2)
+  "Combine 2 integer vectors under the action of the operator."
+
+  (mapcar operator q1 q2))
+
+(defun conserve-quasimomentum (indices operators grid)
+  "Combines with +/- operators a list of wave vectors, represented 
+as 0-based multiplexed indices. The resulting wave vector is folded
+back to the first Brillouin zone."
+
+  (let ((qs (mapcar (lambda (index) (demux index grid)) indices))
+	(final-q '(0 0 0)))
+    ;; Sum all but the last wave vector
+    (loop for iq from 1 to (- (length qs) 1)
+	  do (setq final-q (combine (nth iq operators) final-q (nth iq qs))))
+    (mux (mapcar #'mod final-q grid) grid)))
+
 (defun delta (e1 e2 sigma)
   "Returns the sigma-spread Gaussian representation of the delta function."
   

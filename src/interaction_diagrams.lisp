@@ -3,13 +3,21 @@
 (defun sign-metric (x l)
   (if (<= x l) '+ '-))
 
+(defun flip-sign (signs)
+  "Returns a flipped array of signs."
+  (mapcar (lambda (s)
+	    (cond ((equal s '+) '-)
+		  ((equal s '-) '+)
+		  (t s)))
+	  signs))
+
 (defun coallescence-side-degeneracy (x)
   (if (< x 3) 0 (choose (1- x) 2)))
 
 (defun decay-side-degeneracy (x)
   (if (< x 3) 0 (choose (1- x) 2)))
 
-(defun delta-arguments (number-of-phonons diagram-index)
+(defun delta-arguments-signs (number-of-phonons diagram-index)
   "Returns a list of signs for the delta function arguments
 for a given phonon scattering diagram index and the total
 number of phonons."
@@ -54,3 +62,36 @@ n-phonon scattering:
 "
   (loop for diagram-index from 1 to (1- number-of-phonons)
 	collect (max 1 (* 2 (+ (coallescence-side-degeneracy diagram-index) (decay-side-degeneracy (- number-of-phonons (1- diagram-index))))))))
+
+"
+(1/Nq^(N-1))\sum_q2...qN \sum_s2...sN \delta[-e(s1q1) + e2(s2q2) ... +/- eN(sNqN)]
+
+"
+"
+(defun phase-space-at-energy (number-of-phonons
+			      energy
+			      fbz-energy-qlist
+			      sigma))
+"
+(defun phase-space (number-of-phonons
+		    grid
+		    ibz-wavevector-list
+		    fbz-wavevector-list
+		    ibz-energies-qlist
+		    fbz-energy-qlist
+		    sigma)
+
+  ;;Loop over all diagrams
+  (loop for diagram from 1 to (1- number-of-phonons)
+	do (format t "~%Diagram number = ~a~%" diagram)
+	   
+	   (let* ((signs (delta-arguments-signs number-of-phonons diagram))
+		  (flipped-signs (flip-sign signs)))
+	     
+	     ;;Form interaction (N-1)-tuplet of wave vectors, non-1-qs
+	     
+	     ;;Apply quasimomentum conservation
+	     ;;(conserve-quasimomentum non-1-qs (rest flipped-signs) grid)
+
+	     ;;Generate delta function S-expression
+    )))
