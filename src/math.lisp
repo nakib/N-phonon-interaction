@@ -35,7 +35,7 @@ The x index cycles first, followed by y and then z."
      (* (first grid) (+ (second q) (* (second grid) (third q))))))
 
 (defun combine (operator q1 q2)
-  "Combine 2 integer vectors under the action of the operator."
+  "Combine 2 vectors under the action of the operator."
 
   (mapcar operator q1 q2))
 
@@ -56,3 +56,11 @@ back to the first Brillouin zone."
   
   (/ (exp (* -0.5 (expt (/ (- e1 e2) sigma) 2)))
      (* sigma (sqrt (* 2 pi)))))
+
+(defun cartesian-product (lols)
+  "Returns the Cartesian product of a list of lists (lols)."
+  (if (null lols)
+      (list nil)
+      (loop for i in (first lols)
+            append (loop for j in (cartesian-product (rest lols))  
+                         collect (cons i j)))))

@@ -4,7 +4,7 @@
   (if (<= x l) '+ '-))
 
 (defun flip-sign (signs)
-  "Returns a flipped array of signs."
+  "Returns array of flipped signs."
   (mapcar (lambda (s)
 	    (cond ((equal s '+) '-)
 		  ((equal s '-) '+)
@@ -73,12 +73,13 @@ n-phonon scattering:
 			      fbz-energy-qlist
 			      sigma))
 "
+
 (defun phase-space (number-of-phonons
 		    grid
 		    ibz-wavevector-list
 		    fbz-wavevector-list
-		    ibz-energies-qlist
-		    fbz-energy-qlist
+		    ;ibz-energies-qlist
+		    ;fbz-energy-qlist
 		    sigma)
 
   ;;Loop over all diagrams
@@ -86,12 +87,25 @@ n-phonon scattering:
 	do (format t "~%Diagram number = ~a~%" diagram)
 	   
 	   (let* ((signs (delta-arguments-signs number-of-phonons diagram))
-		  (flipped-signs (flip-sign signs)))
-	     
-	     ;;Form interaction (N-1)-tuplet of wave vectors, non-1-qs
-	     
-	     ;;Apply quasimomentum conservation
-	     ;;(conserve-quasimomentum non-1-qs (rest flipped-signs) grid)
+		  (flipped-signs (flip-sign signs))
+		  (ibz-qlist-muxed
+		    (mapcar (lambda (q) (mux (combine '* q grid) grid)) ibz-wavevector-list))
+		  (fbz-qlist-muxed
+		    (mapcar (lambda (q) (mux (combine '* q grid) grid)) fbz-wavevector-list))
+		  (list-of-interaction-qs '()))
+	     	     
+	     ;;Form interaction N-tuplet of interacting wavevectors.
+	     ;;These are the elements of the Cartesian product set of
+	     ;;{q_1}, {q_2}, ... {q_N}.
+	     (dotimes (i (1- number-of-phonons))
+	       (push fbz-qlist-muxed list-of-interaction-qs))
+	     (push ibz-qlist-muxed list-of-interaction-qs)
+	     	     
+	     (loop for int-N-tup in (cartesian-product list-of-interaction-qs)
+		   do
+		      ;;Apply quasimomentum conservation
+		      (conserve-quasimomentum int-N-tup flipped-signs grid) 
 
-	     ;;Generate delta function S-expression
-    )))
+		      ;;Generate delta function S-expression
+		   ))))
+
