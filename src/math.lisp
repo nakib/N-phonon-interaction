@@ -22,7 +22,7 @@ Brillouin zone."
 
 (defun demux (i grid)
   "Demultiplexes a 0-based index i into integer 0-based triplet (x y z).
-The x index cycles first, followed by y and then z."
+x moves first, followed by y, and then z."
   
   (multiple-value-bind (quotient x) (floor i (first grid))
     (multiple-value-bind (z y) (floor quotient (second grid))
@@ -47,7 +47,7 @@ back to the first Brillouin zone."
   (let ((qs (mapcar (lambda (index) (demux index grid)) indices))
 	(final-q '(0 0 0)))
     ;; Sum all but the last wave vector
-    (loop for iq from 1 to (- (length qs) 1)
+    (loop for iq from 0 to (- (length qs) 2)
 	  do (setq final-q (combine (nth iq operators) final-q (nth iq qs))))
     (mux (mapcar #'mod final-q grid) grid)))
 

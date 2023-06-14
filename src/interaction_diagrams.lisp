@@ -76,12 +76,14 @@ n-phonon scattering:
 
 (defun phase-space (number-of-phonons
 		    grid
-		    ibz-wavevector-list
-		    fbz-wavevector-list
+		    ibz-wavevector-list ;;fractional coordinates
+		    fbz-wavevector-list ;;fractional coordinates
 		    ;ibz-energies-qlist
 		    ;fbz-energy-qlist
 		    sigma)
 
+  ;;TODO Factor out the let *-qlist-muxed and the interaction N-tuplet creation from below. These are diagram type independent.
+  
   ;;Loop over all diagrams
   (loop for diagram from 1 to (1- number-of-phonons)
 	do (format t "~%Diagram number = ~a~%" diagram)
@@ -92,20 +94,25 @@ n-phonon scattering:
 		    (mapcar (lambda (q) (mux (combine '* q grid) grid)) ibz-wavevector-list))
 		  (fbz-qlist-muxed
 		    (mapcar (lambda (q) (mux (combine '* q grid) grid)) fbz-wavevector-list))
-		  (list-of-interaction-qs '()))
-	     	     
+		  (list-of-interaction-qs '())
+		  (qN-muxed nil))
+
 	     ;;Form interaction N-tuplet of interacting wavevectors.
 	     ;;These are the elements of the Cartesian product set of
 	     ;;{q_1}, {q_2}, ... {q_N}.
 	     (dotimes (i (1- number-of-phonons))
 	       (push fbz-qlist-muxed list-of-interaction-qs))
 	     (push ibz-qlist-muxed list-of-interaction-qs)
+
+	     ;;(print list-of-interaction-qs)
+	     ;;(print (cartesian-product list-of-interaction-qs))
 	     	     
 	     (loop for int-N-tup in (cartesian-product list-of-interaction-qs)
 		   do
-		      ;;Apply quasimomentum conservation
-		      (conserve-quasimomentum int-N-tup flipped-signs grid) 
+		      ;;Calculate quasimomentum of the last phonon wavevector
+		      (setq qN-muxed (conserve-quasimomentum int-N-tup flipped-signs grid))
 
 		      ;;Generate delta function S-expression
+		      
 		   ))))
 
